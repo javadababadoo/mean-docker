@@ -1,0 +1,21 @@
+version: '3'
+
+services:
+  device-management-service:
+    image: device_management:v1
+    build: ../../frontend/DeviceManagement/
+    ports:
+      - 80:80
+    depends_on: 
+      - device_core_service
+  device_core_service:
+    image: device_core:v1
+    build: ../../backend/device-core/
+    ports:
+      - 3000:3000
+    depends_on: 
+      - database_service
+  database_service:
+    image: mongo:3.0.15-wheezy
+    ports:
+      - 27017:27017
