@@ -29,11 +29,12 @@ cd mean-docker
 * seed - Docker file that defines the instructions to seed the app.
 
 ### File structure
-* backend/device-core - App backend source built with Node JS, Express and Mongoose.
-* deployment/compose - Directory where its located the docker compose YAML file.
-* frontend - App frontend source.
-* scripts - Scripts used to populate the database.
-* seed - Docker file that defines the instructions to seed the app.
+* backend/device-core/Dockerfile - Defines the dockerfile for device core (Backend - Node JS Server).
+* frontend/DeviceManagement/Dockerfile - Defines the dockerfile for device management (Frontend - Angular).
+* seed/Dockerfile - Defines the dockerfile to seed the Mongo database.
+* deployment/compose/docker-compose.seed.yml - Defines the docker compose file to configure the application's services. (Here the Mongo database is populated).
+* deployment/compose/docker-compose.yml - Defines the docker compose file to configure the application's services.
+* scripts/devices.json - the archive contains the devices data that will be import into mongo.
 
 
 ### Installing
@@ -64,15 +65,24 @@ In order to deploy the app, we have to take into account the following archives:
 
 * ```deployment/compose/docker-compose.yml``` - Deploys the full app.
 
-To deploy application for the first time you need to seed the Mongo database, to do you need to execute the next command in the terminal:
+first thing that you need to do, if you haven't deployed the app is execute the next command in the terminal to seed the Mongo database:
 
+```
+docker-compose -f docker-compose.yml -f docker-compose.seed.yml up -d
+```
+Otherwise, just execute the next command:
 
+```
+docker-compose up
+```
 
 ## Built With
 
 * [npm](https://www.npmjs.com/) - Node package manager
 * [Mongoose](http://mongoosejs.com/) - Mongo object modeling
 * [Angular](https://angular.io/) - App framework
+* [Express](http://expressjs.com/) - Express framework
+* [Docker](https://www.docker.com/) - Docker tools
 
 ## Authors
 
