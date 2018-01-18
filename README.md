@@ -56,7 +56,17 @@ End with an example of getting some data out of the system or using it for a lit
 
 ## Deployment
 
-Add additional notes about how to deploy this on a live system
+this project is using Docker and Docker compose as tools that helps us to easily configure and deploy the full app.
+
+In order to deploy the app, we have to take into account the following archives:
+
+* ```deployment/compose/docker-compose-seed.yml``` - Populates the Mongo database only necessary the first time the app is deployed.
+
+* ```deployment/compose/docker-compose.yml``` - Deploys the full app.
+
+To deploy application for the first time you need to seed the Mongo database, to do you need to execute the next command in the terminal:
+
+
 
 ## Built With
 
@@ -66,7 +76,7 @@ Add additional notes about how to deploy this on a live system
 
 ## Authors
 
-* **Jaime Zapata** - *Initial work* - [Javadababadoo](https://github.com/javadababadoo)
+* **Jaime Zapata** - [Javadababadoo](https://github.com/javadababadoo)
 
 See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
 
