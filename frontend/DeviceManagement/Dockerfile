@@ -1,4 +1,4 @@
-FROM httpd:2.4
+FROM httpd:2.2.34-alpine
 
 WORKDIR /usr/src/device_management/
 

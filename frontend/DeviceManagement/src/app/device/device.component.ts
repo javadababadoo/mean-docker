@@ -11,6 +11,7 @@ export class DeviceComponent implements OnInit {
 
   devicesList: Idevice[];
   deviceId: string;
+  errorMessage: string;
 
   constructor(public deviceService: DeviceService) { }
 
@@ -32,6 +33,9 @@ export class DeviceComponent implements OnInit {
       (devices) => {
         this.devicesList = [];
         this.devicesList = devices;
+      },
+      (error) => {
+        this.errorMessage = <any>error;
       }
     );
   }
@@ -42,6 +46,9 @@ export class DeviceComponent implements OnInit {
       (devices) => {
         this.devicesList = [];
         this.devicesList.push(devices);
+      },
+      (error) => {
+        this.errorMessage = <any>error;
       }
     );
 

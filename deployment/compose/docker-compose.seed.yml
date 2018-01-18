@@ -2,6 +2,10 @@ version: '3'
 
 services:
   mongo-seed:
-    build: ../../scripts/
+    image: mongo:3.0.15-wheezy
+    volumes:
+    - ../../scripts:/scripts
+    command:
+      'bash -c "mongoimport --host database_service --db DeviceDB --collection devices --type json --file /scripts/devices.json"'
     depends_on: 
     - database_service
