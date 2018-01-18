@@ -51,6 +51,19 @@ In order to deploy the app, we have to take into account the following archives:
 
 first thing that you need to do, if you haven't deployed the app is execute the next command in the terminal to seed the Mongo database:
 
+Go to the project directory and then frontend/DeviceManagement/
+
+```
+cd frontend/DeviceManagement/
+```
+Execute the next commands:
+
+```
+npm install 
+ng build --prod
+```
+Then execute:
+
 ```
 docker-compose -f docker-compose.yml -f docker-compose.seed.yml up -d
 ```
