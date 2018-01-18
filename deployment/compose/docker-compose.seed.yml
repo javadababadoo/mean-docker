@@ -2,6 +2,6 @@ version: '3'
 
 services:
   mongo-seed:
-    build: ../../seed/
+    build: ../../scripts/
     depends_on: 
     - database_service
