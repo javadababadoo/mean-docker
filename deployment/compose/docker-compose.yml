@@ -7,8 +7,8 @@ services:
     ports:
       - 80:80
     depends_on: 
-      - device_core_service
-  device_core_service:
+      - backend_service
+  backend_service:
     image: device_core:v1
     build: ../../backend/device-core/
     ports:
