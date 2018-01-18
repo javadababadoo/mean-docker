@@ -43,6 +43,18 @@ cd mean-docker
 
 this project is using Docker and Docker compose as tools that helps us to easily configure and deploy the full app.
 
+Go to frontend/DeviceManagement/ located in the project directory:
+
+```
+cd frontend/DeviceManagement/
+```
+Execute the next commands:
+
+```
+npm install 
+ng build --prod
+```
+
 In order to deploy the app, we have to take into account the following archives:
 
 * ```deployment/compose/docker-compose-seed.yml``` - Populates the Mongo database only necessary the first time the app is deployed.
