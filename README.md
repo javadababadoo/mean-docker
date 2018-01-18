@@ -13,6 +13,9 @@ First, be sure that you have the following dependencies installed:
 ```
 Docker - Available for Linux, Mac o Windows
 ```
+```
+Docker compose - Available for Linux, Mac o Windows
+```
 
 Then, clone the repo from GitHub:
 
@@ -35,25 +38,6 @@ cd mean-docker
 * deployment/compose/docker-compose.seed.yml - Defines the docker compose file to configure the application's services. (Here the Mongo database is populated).
 * deployment/compose/docker-compose.yml - Defines the docker compose file to configure the application's services.
 * scripts/devices.json - the archive contains the devices data that will be import into mongo.
-
-
-### Installing
-
-A step by step series of examples that tell you have to get a development env running
-
-Say what the step will be
-
-```
-Give the example
-```
-
-And repeat
-
-```
-until finished
-```
-
-End with an example of getting some data out of the system or using it for a little demo
 
 ## Deployment
 
