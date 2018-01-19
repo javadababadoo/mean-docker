@@ -3,14 +3,15 @@ import { Idevice } from '../idevice';
 import { DeviceService } from '../device.service';
 
 @Component({
-  selector: 'app-device',
-  templateUrl: './device.component.html',
-  styleUrls: ['./device.component.css']
+  selector: 'app-devices',
+  templateUrl: './devices.component.html',
+  styleUrls: ['./devices.component.css']
 })
-export class DeviceComponent implements OnInit {
+export class DevicesComponent implements OnInit {
 
   devicesList: Idevice[];
   deviceId: string;
+  selectedDevice: Idevice;
   errorMessage: string;
 
   constructor(public deviceService: DeviceService) { }
@@ -51,7 +52,10 @@ export class DeviceComponent implements OnInit {
         this.errorMessage = <any>error;
       }
     );
+  }
 
+  onSelectedDevice(device: Idevice) {
+    this.selectedDevice = device;
   }
 
 }

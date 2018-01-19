@@ -9,6 +9,8 @@ export class DeviceService {
 
   deviceUrl = 'http://localhost:3000/device/';
 
+  selectedDevice: Idevice;
+
   constructor(private _http: HttpClient) { }
 
   getDevice(deviceId: string) {
@@ -23,6 +25,14 @@ export class DeviceService {
 
   getDeviceById(deviceId): Observable<Idevice> {
     return this._http.get<Idevice>(this.deviceUrl + deviceId);
+  }
+
+  setSelectedDevice(device: Idevice) {
+    this.selectedDevice = device;
+  }
+
+  getSelectedDevice() {
+    return this.selectedDevice;
   }
 
 
