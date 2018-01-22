@@ -1,3 +1,14 @@
-.selected-device{
-  background-color: black
+.deviceDiv{
+  width: 100% !important;
+  overflow: hidden;
+  /*background-color: black;*/
+}
+
+.first {
+  width: 300px;
+  float:left; /* add this */
+}
+
+.second {
+  overflow: hidden; /* if you don't want #second to wrap below #first */
 }

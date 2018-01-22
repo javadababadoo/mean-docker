@@ -1,13 +1,26 @@
-<mat-card class="example-card">
-    <mat-card-header>
-      <mat-card-title>{{selectedDevice.name}}</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-      <p>Id: {{selectedDevice._id}}</p>
-      <p>Name: {{selectedDevice.name}}</p>
-      <p>Type: {{selectedDevice.type}}</p>
-      <p>
-        Description: {{selectedDevice.desc}}
-      </p>
-    </mat-card-content>
-  </mat-card>
+<div style="height: 100%;">
+  <div style="height: 8%">
+    <app-page-header pageTitle='Device detail'></app-page-header>
+  </div>
+
+  <div style="height: 92%" class="main-div mat-typography">
+      <mat-card class="example-card" *ngIf="selectedDevice" flex="50">
+          <mat-card-header>
+            <mat-card-title>{{selectedDevice.name}}</mat-card-title>
+          </mat-card-header>
+          <!--img mat-card-image src="http://www.netbiscuits.com/wp-content/uploads/2015/05/illo-devicedetection.png"-->
+          <mat-card-content>
+
+            <p>Id: {{selectedDevice._id}}</p>
+            <p>Type: {{selectedDevice.type}}</p>
+            <p>
+              Description: {{selectedDevice.desc}}
+            </p>
+          </mat-card-content>
+          <mat-card-actions>
+            <button mat-raised-button color="primary" (click)="backClicked()">Back</button>
+          </mat-card-actions>
+        </mat-card>
+  </div>
+
+</div>

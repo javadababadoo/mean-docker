@@ -7,7 +7,7 @@ import { Idevice } from './idevice';
 @Injectable()
 export class DeviceService {
 
-  deviceUrl = 'http://localhost:3000/device/';
+  deviceUrl = 'http://192.168.188.147:3000/device/';
 
   selectedDevice: Idevice;
 

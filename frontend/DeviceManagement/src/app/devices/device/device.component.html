@@ -1,6 +1,10 @@
-<div [ngClass]="{'selected-device': selectedDevice}" (click)="onSelectedDevice()">
-  <ng-content select="mat-icon">
-  </ng-content>
-  {{ device.name }}
+<div class="deviceDiv" [routerLink]="['/device-detail', device._id]">
+
+  <div class="first">
+      <ng-content select="mat-icon"></ng-content>
+  </div>
+  <div class="second">
+      {{ device.name }}
+  </div>
 </div>
 <mat-divider></mat-divider>

@@ -9,22 +9,21 @@ import { DeviceService } from '../../device.service';
 })
 export class DeviceComponent implements OnInit {
 
+  // @Output() selectedDeviceEmmiter = new EventEmitter<Idevice>();
+
   @Input() device: Idevice;
-
-  @Input() selectedDevice: boolean;
-
-  @Output() selectedDeviceEmmiter = new EventEmitter<Idevice>();
 
   constructor(public deviceService: DeviceService) { }
 
   ngOnInit() {
+
   }
 
-  onSelectedDevice() {
+  /**onSelectedDevice() {
     // this.device = idevice;
     console.log('Selected -> ' + this.device);
     this.deviceService.setSelectedDevice(this.device);
     this.selectedDeviceEmmiter.emit(this.device);
-  }
+  }**/
 
 }
