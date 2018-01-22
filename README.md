@@ -72,6 +72,8 @@ Otherwise, just execute the next command:
 docker-compose up
 ```
 
+localhost:80
+
 ## Built With
 
 * [npm](https://www.npmjs.com/) - Node package manager
