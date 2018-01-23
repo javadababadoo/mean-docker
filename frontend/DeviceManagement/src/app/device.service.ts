@@ -8,6 +8,7 @@ import { Idevice } from './idevice';
 export class DeviceService {
 
   deviceUrl = 'http://192.168.188.147:3000/device/';
+  // deviceUrl = 'http://192.168.99.100:3000/device/';
 
   selectedDevice: Idevice;
 
