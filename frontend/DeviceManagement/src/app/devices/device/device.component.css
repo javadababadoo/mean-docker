@@ -1,14 +1,29 @@
-.deviceDiv{
+/*.deviceDiv{
   width: 100% !important;
   overflow: hidden;
-  /*background-color: black;*/
+  /*background-color: black;
 }
 
 .first {
-  width: 300px;
-  float:left; /* add this */
+  width: 20%;
+  float:left;
 }
 
 .second {
-  overflow: hidden; /* if you don't want #second to wrap below #first */
+  width: 60%;
+  overflow: hidden;
 }
+
+.third {
+  width: 20%;
+  overflow: hidden;
+}**/
+
+.deviceDiv {
+  display: flex;
+}
+
+.deviceDiv > div {
+  flex: 1; /*grow*/
+}
+

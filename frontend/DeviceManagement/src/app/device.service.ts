@@ -28,6 +28,15 @@ export class DeviceService {
     return this._http.get<Idevice>(this.deviceUrl + deviceId);
   }
 
+  updateDevice(device: Idevice): Observable<Idevice> {
+    console.log('update -> ' + device._id);
+    return this._http.put<Idevice>(this.deviceUrl + device._id, device);
+  }
+
+  deleteDevice(deviceId: string): Observable<Idevice> {
+    return this._http.delete<Idevice>(this.deviceUrl + deviceId);
+  }
+
   setSelectedDevice(device: Idevice) {
     this.selectedDevice = device;
   }

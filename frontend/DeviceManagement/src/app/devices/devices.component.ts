@@ -54,8 +54,8 @@ export class DevicesComponent implements OnInit {
     );
   }
 
-  onSelectedDevice(device: Idevice) {
-    this.selectedDevice = device;
+  onSelectedDevice(deviceId: string) {
+    this.findAllDevices();
   }
 
 }

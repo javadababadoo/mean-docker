@@ -33,6 +33,7 @@ exports.create_a_device = function(req, res) {
   
   
   exports.update_a_device = function(req, res) {
+    console.log('update_a_device -> '+ req.params.deviceId);
     Device.findOneAndUpdate({_id: req.params.deviceId}, req.body, {new: true}, function(err, device) {
       if (err)
         res.send(err);
@@ -47,9 +48,13 @@ exports.create_a_device = function(req, res) {
     Device.remove({
       _id: req.params.deviceId
     }, function(err, device) {
-      if (err)
+      if (err){
+        res.status(400);
         res.send(err);
-      res.json({ message: 'Device successfully deleted' });
+      }else{
+        res.status(204);
+        res.json({ message: 'Device successfully deleted' });
+      }        
     });
   };
   

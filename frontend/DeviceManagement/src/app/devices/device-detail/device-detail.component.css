@@ -8,3 +8,19 @@
   align-items: center;
   height: 95%;
 }
+
+
+.example-form {
+  min-width: 150px;
+  width: 100%;
+  margin-left: 10px;
+  margin-top: 15px;
+}
+
+.example-form-input{
+  width: 95%;
+}
+
+.example-full-width {
+  width: 100%;
+}
