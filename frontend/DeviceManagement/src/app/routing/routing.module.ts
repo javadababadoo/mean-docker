@@ -8,12 +8,13 @@ import { DeviceDetailComponent } from '../devices/device-detail/device-detail.co
 const routes: Routes = [
   {
     path: '',
-    component: DevicesComponent,
+    redirectTo: 'devices',
     pathMatch: 'full'
   },
   {
-    path: 'device-detail',
-    component: DeviceDetailComponent
+    path: 'devices',
+    component: DevicesComponent,
+    pathMatch: 'full'
   },
   {
     path: 'device-detail/:deviceId',
