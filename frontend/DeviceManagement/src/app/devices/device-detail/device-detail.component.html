@@ -1,9 +1,7 @@
-<div style="height: 100%;" class="mat-typography">
-  <div style="height: 8%">
-    <app-page-header pageTitle='Device detail'></app-page-header>
-  </div>
+<div style="height: 100%; display:flex; flex-direction:column;" class="mat-typography">
+  <app-page-header style="height: 5%" pageTitle='Device detail'></app-page-header>
 
-  <div style="height: 92%" class="main-div">
+  <div class="main-div">
       <mat-card class="example-card mat-elevation-z4" *ngIf="selectedDevice" flex="50">
           <mat-card-header>
             <mat-card-title>{{selectedDevice.name}}</mat-card-title>

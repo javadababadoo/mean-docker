@@ -1,20 +1,20 @@
 <div style="height: 100%; overflow: hidden">
-  <div style="height: 7%;">
-  <mat-toolbar color="primary">
-    <mat-toolbar-row>
-      <span>Device management</span>
-      <span class="example-spacer"></span>
-      <button mat-icon-button color="foreground" matTooltip="Devices" routerLink="/">
-        <mat-icon aria-label="Devices">devices</mat-icon>
-      </button>
+  <div style="height: 7%;background-color: black">
+    <mat-toolbar color="primary">
+      <mat-toolbar-row>
+        <span>Device management</span>
+        <span class="example-spacer"></span>
+        <button mat-icon-button color="foreground" matTooltip="Devices" routerLink="/">
+          <mat-icon aria-label="Devices">devices</mat-icon>
+        </button>
 
-      <button mat-icon-button color="foreground" matTooltip="About" routerLink="/about">
-        <mat-icon aria-label="Announcement">announcement</mat-icon>
-      </button>
-    </mat-toolbar-row>
-  </mat-toolbar>
-</div>
-<div style="height: 95%;">
-<router-outlet></router-outlet>
-</div>
+        <button mat-icon-button color="foreground" matTooltip="About" routerLink="/about">
+          <mat-icon aria-label="Announcement">announcement</mat-icon>
+        </button>
+      </mat-toolbar-row>
+    </mat-toolbar>
+  </div>
+  <div style="height: 93%;">
+    <router-outlet></router-outlet>
+  </div>
 </div>
