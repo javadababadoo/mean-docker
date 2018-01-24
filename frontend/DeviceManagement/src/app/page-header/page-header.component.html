@@ -1,8 +1,17 @@
-<div id="wrapper" class="shadow" color="primary">
+<!--div id="wrapper" class="shadow" color="primary">
   <div class="bottom mat-subheading-2">
     {{pageTitle}}
   </div>
   <div class="right-box">
     <ng-content></ng-content>
   </div>
-</div>
+</div-->
+
+<div id="wrapper" class="shadow" color="primary">
+    <div id="wide" class="bottom mat-subheading-2">
+      {{pageTitle}}
+    </div>
+    <div id="narrow">
+      <ng-content></ng-content>
+    </div>
+  </div>

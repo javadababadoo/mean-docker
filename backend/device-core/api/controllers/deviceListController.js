@@ -18,13 +18,13 @@ exports.create_a_device = function(req, res) {
     new_device.save(function(err, device) {
       if (err)
         res.send(err);
+      res.status(201);
       res.json(device);
     });
   };
   
   exports.read_a_device = function(req, res) {
     Device.findById(req.params.deviceId, function(err, device) {
-      console.log('req.params.deviceId -> '+ req.params.deviceId);
       if (err)
         res.send(err);
       res.json(device);
@@ -33,7 +33,6 @@ exports.create_a_device = function(req, res) {
   
   
   exports.update_a_device = function(req, res) {
-    console.log('update_a_device -> '+ req.params.deviceId);
     Device.findOneAndUpdate({_id: req.params.deviceId}, req.body, {new: true}, function(err, device) {
       if (err)
         res.send(err);
