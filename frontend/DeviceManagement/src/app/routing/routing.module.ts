@@ -21,6 +21,10 @@ const routes: Routes = [
     component: DeviceDetailComponent
   },
   {
+    path: 'device-detail',
+    component: DeviceDetailComponent
+  },
+  {
     path: 'about',
     component: AboutComponent
   }

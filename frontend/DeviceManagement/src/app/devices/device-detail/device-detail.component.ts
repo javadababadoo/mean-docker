@@ -6,6 +6,7 @@ import {Location} from '@angular/common';
 import {FormControl, FormGroupDirective, NgForm, Validators, FormGroup} from '@angular/forms';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {ErrorStateMatcher} from '@angular/material/core';
+import {MatSnackBar} from '@angular/material';
 
 export class MyErrorStateMatcher implements ErrorStateMatcher {
   isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
@@ -29,6 +30,8 @@ export class DeviceDetailComponent implements OnInit {
 
   matcher = new MyErrorStateMatcher();
 
+  isNew: boolean;
+
   deviceTypes = [
     'Type1',
     'Type2',
@@ -37,21 +40,31 @@ export class DeviceDetailComponent implements OnInit {
 
   @Input() selectedDevice: Idevice;
 
-  constructor(public route: ActivatedRoute, public deviceService: DeviceService, private _location: Location) { }
+  constructor(public snackBar: MatSnackBar, public route: ActivatedRoute,
+    public deviceService: DeviceService, private _location: Location) { }
 
   ngOnInit() {
     this.route.paramMap.subscribe(params => {
       const deviceId = params.get('deviceId');
       console.log(deviceId);
 
-      this.deviceService.getDeviceById(deviceId).subscribe(
-        (devices) => {
-          this.selectedDevice = devices;
-        },
-        (error) => {
-          this.selectedDevice = null;
-        }
-      );
+      this.isNew =  (deviceId == null || deviceId.trim().length === 0);
+
+      console.log('isNew -> ' + this.isNew);
+
+      if (!this.isNew) {
+        this.deviceService.getDeviceById(deviceId).subscribe(
+          (devices) => {
+            this.selectedDevice = devices;
+          },
+          (error) => {
+            this.selectedDevice = null;
+          }
+        );
+      }else {
+        this.selectedDevice = new Idevice();
+      }
+
     });
   }
 
@@ -60,9 +73,34 @@ export class DeviceDetailComponent implements OnInit {
     if (this.deviceFormControl.invalid) {
       return;
    }
+
+   if (this.isNew) {
+    this.createDevice(this.selectedDevice);
+   }else {
+    this.updateDevice(this.selectedDevice);
+   }
+
+  }
+
+  createDevice(device: Idevice) {
+    this.deviceService.createDevice(device).subscribe(
+      (devices) => {
+        this.selectedDevice = devices;
+    this.openSnackBar('Device successfully created');
+    console.log('create device -> ' + JSON.stringify(devices));
+        this.isNew = false;
+      },
+      (error) => {
+        console.log('Error creating device ');
+      }
+    );
+  }
+
+  updateDevice(device: Idevice) {
     this.deviceService.updateDevice(this.selectedDevice).subscribe(
       (devices) => {
         this.selectedDevice = devices;
+        this.openSnackBar('Device succesfully updated');
         console.log('Save changes -> ' + JSON.stringify(devices));
       },
       (error) => {
@@ -74,6 +112,12 @@ export class DeviceDetailComponent implements OnInit {
 
   backClicked() {
     this._location.back();
+  }
+
+  openSnackBar(message: string) {
+    this.snackBar.open(message, null, {
+      duration: 2000,
+    });
   }
 
 }

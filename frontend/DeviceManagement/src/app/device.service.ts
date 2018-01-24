@@ -28,6 +28,10 @@ export class DeviceService {
     return this._http.get<Idevice>(this.deviceUrl + deviceId);
   }
 
+  createDevice(device: Idevice): Observable<Idevice> {
+    return this._http.post<Idevice>(this.deviceUrl, device);
+  }
+
   updateDevice(device: Idevice): Observable<Idevice> {
     console.log('update -> ' + device._id);
     return this._http.put<Idevice>(this.deviceUrl + device._id, device);
