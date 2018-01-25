@@ -1,18 +1,26 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Observable,  } from 'rxjs/Observable';
+import { Response, Http } from '@angular/http';
+import { Observable, } from 'rxjs/Observable';
 import { catchError, map, tap } from 'rxjs/operators';
 import { Idevice } from './idevice';
+import { of } from 'rxjs/observable/of';
+import 'rxjs/operators';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/filter';
+import 'rxjs/add/operator/delay';
 
 @Injectable()
 export class DeviceService {
+
+  deviceValidation = 'http://192.168.188.147:3000/deviceNameValidation/';
 
   deviceUrl = 'http://192.168.188.147:3000/device/';
   // deviceUrl = 'http://192.168.99.100:3000/device/';
 
   selectedDevice: Idevice;
 
-  constructor(private _http: HttpClient) { }
+  constructor(private _http: HttpClient, private _http1: Http) { }
 
   getDevice(deviceId: string) {
     this._http.get<Idevice>(this.deviceUrl).subscribe(data => {
@@ -20,8 +28,16 @@ export class DeviceService {
     });
   }
 
+  verifyDeviceExists(deviceId: string, deviceName: string) {
+    return this._http1.get(this.deviceValidation + deviceId + '?' + 'deviceName=' + deviceName)
+      .map((res: Response) => res.json());
+  }
+
   getDeviceList(): Observable<Idevice[]> {
-    return this._http.get<Idevice[]>(this.deviceUrl);
+    return this._http.get<Idevice[]>(this.deviceUrl).pipe(
+      catchError(
+        this.handleError('getDeviceList', [])
+      ));
   }
 
   getDeviceById(deviceId): Observable<Idevice> {
@@ -50,7 +66,7 @@ export class DeviceService {
   }
 
 
-  /**private handleError<T> (operation = 'operation', result?: T) {
+  private handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
       // TODO: send the error to remote logging infrastructure
       console.error(error); // log to console instead
@@ -60,7 +76,6 @@ export class DeviceService {
       return of(result as T);
     };
   }
-**/
 
   private log(log: string) {
     console.log(log);

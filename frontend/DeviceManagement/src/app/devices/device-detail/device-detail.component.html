@@ -10,7 +10,8 @@
             <tr>
               <td>
                 <mat-form-field class="example-form-input">
-                  <input matInput placeholder="Name"  [(ngModel)]="selectedDevice.name" name="Name" formControlName="name" maxlength="20" [errorStateMatcher]="confirmValidParentMatcher">
+                  <input matInput placeholder="Name"  [(ngModel)]="selectedDevice.name" name="Name" formControlName="name"  maxlength="20"
+                  [errorStateMatcher]="confirmValidParentMatcher"/>
                   <mat-hint align="start"><strong>Type a name according to the device type</strong> </mat-hint>
                   <mat-hint align="end">{{selectedDevice.name.length}} / 20</mat-hint>
                   <mat-error *ngIf="deviceFormControl.hasError('required', 'name')">
@@ -25,6 +26,12 @@
                     Name can be max
                     <strong>20 characters</strong> long.
                   </mat-error>
+                  <mat-error *ngIf="deviceFormControl.hasError('forbidenNameValidator')">
+                     Name must be given according to the selected <strong>device type</strong>
+                  </mat-error>
+                  <mat-error *ngIf="deviceFormControl.hasError('validateNameNotTaken', 'name')">
+                      The device name has already been taken
+                   </mat-error>
                 </mat-form-field>
               </td>
             </tr>
@@ -42,7 +49,7 @@
             <tr>
               <td>
                 <mat-form-field class="example-form-input">
-                  <mat-select required placeholder="Device type" #deviceTypeSelect [(ngModel)]="selectedDevice.type" formControlName="type" required [errorStateMatcher]="confirmValidParentMatcher">
+                  <mat-select required placeholder="Device type" #deviceTypeSelect [(ngModel)]="selectedDevice.type" formControlName="type" required>
                     <mat-option>--</mat-option>
                     <mat-option *ngFor="let deviceType of deviceTypes" [value]="deviceType">{{deviceType}}</mat-option>
                   </mat-select>

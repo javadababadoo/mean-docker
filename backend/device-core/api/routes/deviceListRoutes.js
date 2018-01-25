@@ -2,6 +2,9 @@
 module.exports = function(app) {
   var deviceList = require('../controllers/deviceListController');
 
+  app.route('/deviceNameValidation/:deviceId').
+  get(deviceList.device_exists);
+
   app.route('/device')
     .get(deviceList.list_all_devices)
     .post(deviceList.create_a_device);

@@ -4,6 +4,15 @@
 var mongoose = require('mongoose'),
 Device = mongoose.model('Device');
 
+
+exports.device_exists = function(req, res) {
+  Device.findOne({name: req.query.deviceName, _id: {$ne: req.params.deviceId}}, '_id', function(err, device) {
+    if (err)
+      res.send(err);
+    res.json({'_id': (device != null ? device._id: 0), 'exists': (device != null)});
+  });
+};
+
 exports.list_all_devices = function(req, res) {
   Device.find({}, function(err, device) {
     if (err)
