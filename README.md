@@ -86,7 +86,7 @@ localhost:80
 
 * **Jaime Zapata** - [Javadababadoo](https://github.com/javadababadoo)
 
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
+See also the list of [contributors](https://github.com/javadababadoo/mean-docker/contributors) who participated in this project.
 
 ## License
 
