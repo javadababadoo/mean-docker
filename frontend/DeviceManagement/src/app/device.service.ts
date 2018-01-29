@@ -6,9 +6,6 @@ import { catchError, map, tap } from 'rxjs/operators';
 import { Idevice } from './idevice';
 import { of } from 'rxjs/observable/of';
 import 'rxjs/operators';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/filter';
-import 'rxjs/add/operator/delay';
 
 @Injectable()
 export class DeviceService {
@@ -30,7 +27,7 @@ export class DeviceService {
 
   verifyDeviceExists(deviceId: string, deviceName: string) {
     return this._http1.get(this.deviceValidation + deviceId + '?' + 'deviceName=' + deviceName)
-      .map((res: Response) => res.json());
+    .pipe(map((res: Response) => res.json()));
   }
 
   getDeviceList(): Observable<Idevice[]> {
@@ -41,7 +38,9 @@ export class DeviceService {
   }
 
   getDeviceById(deviceId): Observable<Idevice> {
-    return this._http.get<Idevice>(this.deviceUrl + deviceId);
+    return this._http.get<Idevice>(this.deviceUrl + deviceId).pipe(
+      map((a) => a),
+    );
   }
 
   createDevice(device: Idevice): Observable<Idevice> {

@@ -10,6 +10,7 @@ import {MatSnackBar} from '@angular/material';
 import { ValidatorFn, AbstractControl } from '@angular/forms';
 import { OnChanges, SimpleChanges } from '@angular/core/src/metadata/lifecycle_hooks';
 import { ValidationErrors } from '@angular/forms/src/directives/validators';
+import { catchError, map, tap } from 'rxjs/operators';
 import { DEVICE_TYPES } from '../device-type';
 
 
@@ -34,7 +35,6 @@ export class ConfirmValidParentMatcher implements ErrorStateMatcher {
       return control.parent.invalid;
   }
 }
-
 
 @Component({
   selector: 'app-device-detail',
@@ -91,10 +91,12 @@ export class DeviceDetailComponent implements OnInit {
   }
 
   validateNameNotTaken(control: AbstractControl) {
-    return this.deviceService.verifyDeviceExists(this.selectedDevice._id, control.value).map(res => {
-      console.log('valid -> ' + ((res == null || !res.exists) ? null : { 'validateNameNotTaken': true }));
-      return (res == null || !res.exists) ? null : { 'validateNameNotTaken': true };
-    });
+    return this.deviceService.verifyDeviceExists(this.selectedDevice._id, control.value).pipe(
+      map(res => {
+        console.log('valid -> ' + ((res == null || !res.exists) ? null : { 'validateNameNotTaken': true }));
+        return (res == null || !res.exists) ? null : { 'validateNameNotTaken': true };
+      })
+    );
   }
 
   saveChanges() {

@@ -6,10 +6,20 @@ Device = mongoose.model('Device');
 
 
 exports.device_exists = function(req, res) {
-  Device.findOne({name: req.query.deviceName, _id: {$ne: req.params.deviceId}}, '_id', function(err, device) {
-    if (err)
+  var deviceId = req.params.deviceId;
+  var search = null;
+  if(mongoose.Types.ObjectId.isValid(deviceId)){
+    search = {name: req.query.deviceName, _id: {$ne: req.params.deviceId}};
+  }else{
+    search = {name: req.query.deviceName};
+  }
+  Device.findOne(search, '_id', function(err, device) {
+    if (err){
+      console.log(err);
       res.send(err);
-    res.json({'_id': (device != null ? device._id: 0), 'exists': (device != null)});
+    }else{
+      res.json({'_id': (device != null ? device._id: '0'), 'exists': (device != null)});
+    }    
   });
 };
 

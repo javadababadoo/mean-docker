@@ -46,5 +46,13 @@ var routes = require('./api/routes/deviceListRoutes');
 routes(app); //register the route
 
 
+app.use(function(err, req, res, next) {
+  res.status(err.status || 500);
+  res.render('error', {
+      message: err.message,
+      error: err
+  });
+});
+
 app.listen(port);
 console.log('API server started on: ' + port);
