@@ -47,11 +47,14 @@ export class DeviceDetailComponent implements OnInit {
 
   confirmValidParentMatcher = new ConfirmValidParentMatcher();
 
-  deviceTypes = DEVICE_TYPES;
-
   @Input() selectedDevice: Idevice;
 
   deviceFormControl: FormGroup;
+
+  device_types_keys(): Array<string> {
+    const keys = Object.keys(DEVICE_TYPES);
+    return keys.slice(keys.length / 2);
+}
 
   constructor(public snackBar: MatSnackBar, public route: ActivatedRoute,
     public deviceService: DeviceService, private _location: Location, public fb: FormBuilder) { }
@@ -67,6 +70,7 @@ export class DeviceDetailComponent implements OnInit {
         this.deviceService.getDeviceById(deviceId).subscribe(
           (devices) => {
             this.selectedDevice = devices;
+            this.deviceService.putSelectedDevice(this.selectedDevice);
           },
           (error) => {
             this.selectedDevice = null;

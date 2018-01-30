@@ -6,7 +6,8 @@
 
 
 <div class="deviceDiv" >
-  <div class="deviceDiv" [routerLink]="['/device-detail', device._id]">
+    <!--div class="deviceDiv" [routerLink]="['/device-detail', device._id]"-->
+  <div class="deviceDiv">
     <div class="first">
       <ng-content select="mat-icon"></ng-content>
     </div>
@@ -19,6 +20,9 @@
     <button mat-icon-button color="warn" (click)="deleteDevice()">
       <mat-icon aria-label="Example icon-button with a heart icon">delete_forever</mat-icon>
     </button>
+    <button mat-icon-button color="warn" (click)="deleteDevice()">
+        <mat-icon aria-label="Example icon-button with a heart icon">delete_forever</mat-icon>
+      </button>
   </div>
 </div>
 <mat-divider></mat-divider>

@@ -17,7 +17,6 @@ export class DeviceComponent implements OnInit {
   constructor(public snackBar: MatSnackBar, public deviceService: DeviceService) { }
 
   ngOnInit() {
-
   }
 
   deleteDevice() {

@@ -51,7 +51,7 @@
                 <mat-form-field class="example-form-input">
                   <mat-select required placeholder="Device type" #deviceTypeSelect [(ngModel)]="selectedDevice.type" formControlName="type" required>
                     <mat-option>--</mat-option>
-                    <mat-option *ngFor="let deviceType of deviceTypes" [value]="deviceType">{{deviceType}}</mat-option>
+                    <mat-option *ngFor="let deviceType of device_types_keys()" [value]="deviceType">{{deviceType}}</mat-option>
                   </mat-select>
                   <mat-error *ngIf="deviceTypeSelect.empty || deviceFormControl.hasError('required', 'type')">
                       Type is

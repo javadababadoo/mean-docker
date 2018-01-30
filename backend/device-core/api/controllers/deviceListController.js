@@ -24,7 +24,14 @@ exports.device_exists = function(req, res) {
 };
 
 exports.list_all_devices = function(req, res) {
-  Device.find({}, function(err, device) {
+  var deviceName = req.query.deviceName;
+  var query = {};
+//{$regex: '/'+deviceName.trim()+'$/'}
+  if(deviceName){
+    query = {name: new RegExp(deviceName.trim(), "i")};
+  }
+  console.log(query);
+  Device.find(query, function(err, device) {
     if (err)
       res.send(err);
     console.log('Length: '+device.length);  
