@@ -12,8 +12,8 @@ import { DEVICE_TYPES } from './devices/device-type';
 export class DeviceService {
   deviceValidation = 'http://192.168.188.147:3000/deviceNameValidation/';
 
-  deviceUrl = 'http://192.168.188.147:3000/device/';
-  // deviceUrl = 'http://192.168.99.100:3000/device/';
+   deviceUrl = 'http://192.168.188.147:3000/device/';
+   // deviceUrl = 'http://192.168.99.100:3000/device/';
 
   selectedDevice: Idevice;
 

@@ -1,28 +1,34 @@
 <div style="height: 100%;display:flex; flex-direction:column;">
 
-      <app-page-header style="height: 5%" pageTitle='Devices'>
-          <!--button mat-raised-button color="warn" [routerLink]="['/device-detail']">New device</button-->
+  <app-page-header style="height: 6%" pageTitle='Devices'>
+    <button mat-raised-button color="warn" [routerLink]="['/device-detail']">New device</button>
+  </app-page-header>
+
+  <div style="display:flex; flex-direction: column; justify-content: center;
+   align-items: center; justify-content: center; height: 94%" >
+
+      <div style="width: 500px">
           <form class="example-form">
-              <mat-form-field class="example-full-width">
-                <input matInput #searchFilter value="" (keyup)="search(searchFilter.value)">
-              </mat-form-field>
+            <mat-form-field class="example-full-width">
+              <input matInput placeholder="Search filter" #searchFilter value="" (keyup)="search(searchFilter.value)">
+            </mat-form-field>
           </form>
-      </app-page-header>
-
-      <div *ngFor="let lastDevice of combineResult$ | async">
-        <div>
-            {{lastDevice.id}}
         </div>
-      </div>
 
-      <div style="height: 95%; overflow-y: scroll;" class="mat-elevation-z4">
-          <mat-list>
-              <mat-list-item *ngFor="let device of devices$ | async" (click)="selectDevice(device)" appHighLight color="#d9d9d9">
-                <app-device style="width: 100%;" [device]="device" (selectedDeviceEmmiter)="onSelectedDevice($event)">
-                  <mat-icon>devices</mat-icon>
-                </app-device>
-              </mat-list-item>
-            </mat-list>
+    <div style="width: 500px" *ngFor="let lastDevice of combineResult$ | async">
+      <div>
+        {{lastDevice.id}}
       </div>
+    </div>
+
+    <div style="overflow-y: scroll; width: 500px; height: 80%" class="mat-elevation-z4">
+      <mat-list>
+        <mat-list-item *ngFor="let device of devices$ | async" (click)="selectDevice(device)" appHighLight color="#d9d9d9">
+          <app-device style="width: 100%;" [device]="device" (selectedDeviceEmmiter)="onSelectedDevice($event)">
+            <mat-icon>devices</mat-icon>
+          </app-device>
+        </mat-list-item>
+      </mat-list>
+    </div>
   </div>
-
+</div>
