@@ -19,6 +19,11 @@ export class DeviceComponent implements OnInit {
   ngOnInit() {
   }
 
+  selectDevice() {
+    console.log('Selecte device: ' + JSON.stringify(this.device));
+    this.deviceService.putSelectedDevice(this.device);
+  }
+
   deleteDevice() {
     this.deviceService.deleteDevice(this.device._id).subscribe(
       (data) => {

@@ -21,9 +21,20 @@
 
 .deviceDiv {
   display: flex;
+  align-items: center;
+  align-content: center;
 }
 
-.deviceDiv > div {
+.first {
   flex: 1; /*grow*/
+}
+
+.second {
+  text-align: center;
+  flex: 3; /*grow*/
+}
+
+.third {
+  flex: 2; /*grow*/
 }
 

@@ -19,6 +19,7 @@ import { debounceTime } from 'rxjs/operators/debounceTime';
 import { switchMap } from 'rxjs/operators/switchMap';
 import { distinctUntilChanged } from 'rxjs/operators/distinctUntilChanged';
 import { startWith } from 'rxjs/operators/startWith';
+import { share } from 'rxjs/operators/share';
 
 @Component({
   selector: 'app-devices',
@@ -32,6 +33,7 @@ export class DevicesComponent implements OnInit, OnDestroy {
   selectedDevice: Idevice;
   errorMessage: string;
 
+  devicesSubject$: Observable<Idevice[]>;
 
   devices$: Observable<Idevice[]>;
 
@@ -57,23 +59,16 @@ export class DevicesComponent implements OnInit, OnDestroy {
     this.deviceService.test();
   }
 
-  selectDevice(device: Idevice) {
-    console.log('Selecte device: ' + JSON.stringify(device));
-    this.deviceService.putSelectedDevice(device);
-  }
-
   initObservables() {
-
-    this.devices$ = this.keySubject.asObservable().pipe(
+    this.devicesSubject$ = this.keySubject.asObservable().pipe(
       debounceTime(1000),
       startWith(''),
       distinctUntilChanged(),
-      switchMap(textfilter => this.deviceService.getDeviceList(textfilter))
+      switchMap(textfilter => {
+        console.log('keySubject');
+        return this.deviceService.getDeviceList(textfilter);
+      })
     );
-
-    // this.devices$.subscribe(function(val){
-    //     console.log(val);
-    // });
 
     // this.keySubject.pipe(
     //   debounceTime(1000),
@@ -83,26 +78,27 @@ export class DevicesComponent implements OnInit, OnDestroy {
     //   console.log(val);
     // });
 
-    // this.devices$ = this.deviceService.getDeviceList(null);
+    this.devices$ = this.deviceService.getDeviceList(null);
 
     this.devicesGroup$ = this.devices$.pipe(
       mergeMap(obs$ => Observable.from(obs$)),
       groupBy(device => device.type),
       mergeMap(list$ => {
+        console.log('devicesGroup');
         const count$ = list$.count();
         return count$.map(count => ({ type: list$.key, count }));
       }),
       toArray(),
     );
 
-     this.combineResult$ = combineLatest(this.deviceService.observableMRA$,
+    // this.devicesGroup$.subscribe(function (val) {
+    //   console.log('Text');
+    //   console.log(val);
+    // });
+
+     this.combineResult$ = Observable.combineLatest(this.deviceService.observableMRA$,
       this.deviceService.observableLSR$,
       this.deviceService.observableVOC$);
-
-    this.devicesGroup$.subscribe(function (val) {
-      console.log('Text');
-      console.log(val);
-    });
 
 
 
@@ -185,7 +181,7 @@ export class DevicesComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.lastDeviceSubscription.unsubscribe();
+    // this.lastDeviceSubscription.unsubscribe();
   }
 
   search(searchFilterText) {

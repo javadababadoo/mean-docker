@@ -7,6 +7,7 @@ import { Idevice } from './idevice';
 import { of } from 'rxjs/observable/of';
 import { Subject } from 'rxjs/Subject';
 import { DEVICE_TYPES } from './devices/device-type';
+import { retry } from 'rxjs/operators/retry';
 
 @Injectable()
 export class DeviceService {
@@ -77,7 +78,8 @@ export class DeviceService {
     return this._http.get<Idevice[]>(url).pipe(
       catchError(
         this.handleError('getDeviceList', [])
-      ));
+      ),
+    retry(3));
   }
 
   getDeviceById(deviceId): Observable<Idevice> {

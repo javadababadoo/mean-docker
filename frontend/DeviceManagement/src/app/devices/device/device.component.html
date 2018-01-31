@@ -7,21 +7,20 @@
 
 <div class="deviceDiv" >
     <!--div class="deviceDiv" [routerLink]="['/device-detail', device._id]"-->
-  <div class="deviceDiv">
+
     <div class="first">
       <ng-content select="mat-icon"></ng-content>
     </div>
-    <div class="second">
+    <div class="second" [routerLink]="['/device-detail', device._id]">
       {{ device.name }}
     </div>
-  </div>
 
   <div class="third">
     <button mat-icon-button color="warn" (click)="deleteDevice()">
       <mat-icon aria-label="Example icon-button with a heart icon">delete_forever</mat-icon>
     </button>
-    <button mat-icon-button color="warn" (click)="deleteDevice()">
-        <mat-icon aria-label="Example icon-button with a heart icon">delete_forever</mat-icon>
+    <button mat-icon-button color="primary" (click)="selectDevice()">
+        <mat-icon aria-label="Hearing devices">hearing</mat-icon>
       </button>
   </div>
 </div>
