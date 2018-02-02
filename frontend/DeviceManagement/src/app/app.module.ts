@@ -1,3 +1,4 @@
+import { StoreModule } from '@ngrx/store';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
@@ -36,7 +37,8 @@ import { PageHeaderComponent } from './page-header/page-header.component';
     HttpClientModule,
     RoutingModule,
     ReactiveFormsModule,
-    HttpModule
+    HttpModule,
+    StoreModule.forRoot({})
   ],
   providers: [DeviceService],
   bootstrap: [AppComponent]

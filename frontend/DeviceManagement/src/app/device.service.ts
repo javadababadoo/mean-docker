@@ -109,6 +109,24 @@ export class DeviceService {
     return this.selectedDevice;
   }
 
+  getIssue() {
+    return this._http.get('./issue.json').map((response: Response) => response.json()).catch(this._errorHandler);
+  }
+
+  getOrganizations() {
+    return this._http.get('./organizations.json').map((response: Response) => response.json()).catch(this._errorHandler);
+  }
+
+  getUsers() {
+    return this._http.get('./users.json').map((response: Response) => response.json()).catch(this._errorHandler);
+  }
+
+
+  _errorHandler(error: Response) {
+    console.log(error);
+    return Observable.throw(error || 'Internal server error');
+  }
+
 
   private handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {

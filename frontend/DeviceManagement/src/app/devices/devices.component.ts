@@ -1,3 +1,4 @@
+import { ApplicationState } from './../store/application-state';
 import { Component, OnInit } from '@angular/core';
 import { Idevice } from '../idevice';
 import { DeviceService } from '../device.service';
@@ -20,6 +21,7 @@ import { switchMap } from 'rxjs/operators/switchMap';
 import { distinctUntilChanged } from 'rxjs/operators/distinctUntilChanged';
 import { startWith } from 'rxjs/operators/startWith';
 import { share } from 'rxjs/operators/share';
+import { Store } from '@ngrx/store';
 
 @Component({
   selector: 'app-devices',
@@ -51,15 +53,26 @@ export class DevicesComponent implements OnInit, OnDestroy {
 
   keySubject: Subject<string> = new Subject();
 
-  constructor(public deviceService: DeviceService) { }
+  constructor(public deviceService: DeviceService, private store: Store<ApplicationState>) { }
 
   ngOnInit() {
     this.findDevices();
     this.initObservables();
     this.deviceService.test();
+
+    //////////// PRACTICE /////////////
+    this.deviceService.getIssue().pipe(
+      map(issue => issue)
+    ).subscribe(val => console.log('Practice1 -> ' + val));
   }
 
   initObservables() {
+    this.store.subscribe(
+      console.log
+    );
+
+
+
     this.devicesSubject$ = this.keySubject.asObservable().pipe(
       debounceTime(1000),
       startWith(''),
