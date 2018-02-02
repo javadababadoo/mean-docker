@@ -110,7 +110,9 @@ export class DeviceService {
   }
 
   getIssue() {
-    return this._http.get('./issue.json').map((response: Response) => response.json()).catch(this._errorHandler);
+    return this._http.
+    get('https://raw.githubusercontent.com/javadababadoo/mean-docker/ngrx/frontend/DeviceManagement/src/assets/issue.json')
+    .map((response) => response).catch(this._errorHandler);
   }
 
   getOrganizations() {

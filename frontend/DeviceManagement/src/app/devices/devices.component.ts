@@ -62,8 +62,8 @@ export class DevicesComponent implements OnInit, OnDestroy {
 
     //////////// PRACTICE /////////////
     this.deviceService.getIssue().pipe(
-      map(issue => issue)
-    ).subscribe(val => console.log('Practice1 -> ' + val));
+      map(issue => issue.fields.creator.key)
+    ).subscribe(val => console.log(val));
   }
 
   initObservables() {
