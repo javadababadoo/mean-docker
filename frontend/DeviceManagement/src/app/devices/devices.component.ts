@@ -61,14 +61,46 @@ export class DevicesComponent implements OnInit, OnDestroy {
     this.deviceService.test();
 
     //////////// PRACTICE /////////////
-    this.deviceService.getIssue().pipe(
+
+    const array1 = [
+      {id: 1},
+      {id: 2}
+    ];
+
+    // Observable.from(array1).pipe(
+    //   map(val => val.id)
+    // ).subscribe(console.log);
+
+
+    const observableIssue = this.deviceService.getIssue().pipe(
       map(issue => issue.fields.creator.key)
-    ).subscribe(val => console.log(val));
+    );
+
+    const observableOrganizations = this.deviceService.getOrganizations().pipe(
+      map(organization => organization.values),
+      map(array => Observable.from(array)),
+      mergeMap(val => val.map(test => test.id)),
+    );
+
+    const users = observableOrganizations
+    .pipe(
+      mergeMap(val => this.deviceService.getUsersByOrganization(val)),
+      map(array => Observable.from(array)),
+      mergeMap(val => val)
+    );
+
+    // observableIssue.mergeMap(val => users.);
+
+    users.subscribe(console.log);
+
+
   }
 
   initObservables() {
     this.store.subscribe(
-      console.log
+      val => {
+        // console.log('');
+      }
     );
 
 
@@ -78,7 +110,6 @@ export class DevicesComponent implements OnInit, OnDestroy {
       startWith(''),
       distinctUntilChanged(),
       switchMap(textfilter => {
-        console.log('keySubject');
         return this.deviceService.getDeviceList(textfilter);
       })
     );
@@ -97,7 +128,6 @@ export class DevicesComponent implements OnInit, OnDestroy {
       mergeMap(obs$ => Observable.from(obs$)),
       groupBy(device => device.type),
       mergeMap(list$ => {
-        console.log('devicesGroup');
         const count$ = list$.count();
         return count$.map(count => ({ type: list$.key, count }));
       }),

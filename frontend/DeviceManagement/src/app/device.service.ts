@@ -116,11 +116,15 @@ export class DeviceService {
   }
 
   getOrganizations() {
-    return this._http.get('./organizations.json').map((response: Response) => response.json()).catch(this._errorHandler);
+    return this._http
+    .get('https://raw.githubusercontent.com/javadababadoo/mean-docker/ngrx/frontend/DeviceManagement/src/assets/organizations.json')
+    .map((response: Response) => response).catch(this._errorHandler);
   }
 
-  getUsers() {
-    return this._http.get('./users.json').map((response: Response) => response.json()).catch(this._errorHandler);
+  getUsersByOrganization(organizationId) {
+    return this._http
+    .get('https://raw.githubusercontent.com/javadababadoo/mean-docker/ngrx/frontend/DeviceManagement/src/assets/users.json')
+    .map((response: Response) => response).catch(this._errorHandler);
   }
 
 
