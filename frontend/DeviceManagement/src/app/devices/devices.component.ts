@@ -79,19 +79,30 @@ export class DevicesComponent implements OnInit, OnDestroy {
     const observableOrganizations = this.deviceService.getOrganizations().pipe(
       map(organization => organization.values),
       map(array => Observable.from(array)),
-      mergeMap(val => val.map(test => test.id)),
+      mergeMap(val => val.map(test => {
+        return {id: test.id, name: test.name};
+      })),
     );
 
-    const users = observableOrganizations
+    const usersOrganization = observableOrganizations
     .pipe(
-      mergeMap(val => this.deviceService.getUsersByOrganization(val)),
+      mergeMap(val => {
+
+        // this.deviceService.getUsersByOrganization(val.id).pipe(
+        //   mergeMap(val =>)
+        // );
+
+        return this.deviceService.getUsersByOrganization(val.id)
+        .map(res => ({ name: val.name, users: res}));
+      }),
+      toArray(),
       map(array => Observable.from(array)),
       mergeMap(val => val)
     );
 
-    // observableIssue.mergeMap(val => users.);
 
-    users.subscribe(console.log);
+
+    usersOrganization.subscribe(console.log);
 
 
   }

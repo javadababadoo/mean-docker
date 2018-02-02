@@ -124,7 +124,9 @@ export class DeviceService {
   getUsersByOrganization(organizationId) {
     return this._http
     .get('https://raw.githubusercontent.com/javadababadoo/mean-docker/ngrx/frontend/DeviceManagement/src/assets/users.json')
-    .map((response: Response) => response).catch(this._errorHandler);
+    .map((response: Response) => response)
+    .map((response: Response) => response)
+    .catch(this._errorHandler);
   }
 
 
