@@ -4,7 +4,6 @@ import 'hammerjs';
 
 import { AppModule } from './app/app.module';
 import { environment } from './environments/environment';
-import * as _ from 'lodash';
 
 if (environment.production) {
   enableProdMode();

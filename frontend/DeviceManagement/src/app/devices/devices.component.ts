@@ -1,4 +1,4 @@
-import { ApplicationState } from './../store/application-state';
+import { LoadDeviceAction } from './../store/actions';
 import { Component, OnInit } from '@angular/core';
 import { Idevice } from '../idevice';
 import { DeviceService } from '../device.service';
@@ -22,6 +22,9 @@ import { distinctUntilChanged } from 'rxjs/operators/distinctUntilChanged';
 import { startWith } from 'rxjs/operators/startWith';
 import { share } from 'rxjs/operators/share';
 import { Store } from '@ngrx/store';
+import * as _ from 'lodash';
+import { ApplicationState } from '../app.reducer';
+// import * as fromApp from '../store/app.reducer';
 
 @Component({
   selector: 'app-devices',
@@ -35,9 +38,10 @@ export class DevicesComponent implements OnInit, OnDestroy {
   selectedDevice: Idevice;
   errorMessage: string;
 
-  devicesSubject$: Observable<Idevice[]>;
-
   devices$: Observable<Idevice[]>;
+
+
+  devicesSubject$: Observable<Idevice[]>;
 
   devicesGroup$: Observable<any[]>;
 
@@ -58,59 +62,75 @@ export class DevicesComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.findDevices();
     this.initObservables();
-    this.deviceService.test();
+    // this.deviceService.test();
 
     //////////// PRACTICE /////////////
+    // const observableIssue = this.deviceService.getIssue().pipe(
+    //   map(issue => issue.fields.creator.key)
+    // );
 
-    const array1 = [
-      {id: 1},
-      {id: 2}
-    ];
+    // const observableOrganizations = this.deviceService.getOrganizations().pipe(
+    //   map(organization => organization.values),
+    //   map(array => Observable.from(array)),
+    //   mergeMap(val => val.map(test => {
+    //     return {id: test.id, name: test.name};
+    //   })),
+    // );
 
-    // Observable.from(array1).pipe(
-    //   map(val => val.id)
-    // ).subscribe(console.log);
+    // const usersOrganization = observableOrganizations
+    // .pipe(
+    //   mergeMap(val => {
 
+    //     // this.deviceService.getUsersByOrganization(val.id).pipe(
+    //     //   mergeMap(val =>)
+    //     // );
 
-    const observableIssue = this.deviceService.getIssue().pipe(
-      map(issue => issue.fields.creator.key)
-    );
+    //     return this.deviceService.getUsersByOrganization(val.id)
+    //     .map(res => ({ name: val.name, users: res}));
+    //   }),
+    //   toArray(),
+    //   map(array => Observable.from(array)),
+    //   mergeMap(val => val)
+    // );
 
-    const observableOrganizations = this.deviceService.getOrganizations().pipe(
-      map(organization => organization.values),
-      map(array => Observable.from(array)),
-      mergeMap(val => val.map(test => {
-        return {id: test.id, name: test.name};
-      })),
-    );
+    // usersOrganization.subscribe(console.log);
 
-    const usersOrganization = observableOrganizations
-    .pipe(
-      mergeMap(val => {
-
-        // this.deviceService.getUsersByOrganization(val.id).pipe(
-        //   mergeMap(val =>)
-        // );
-
-        return this.deviceService.getUsersByOrganization(val.id)
-        .map(res => ({ name: val.name, users: res}));
-      }),
-      toArray(),
-      map(array => Observable.from(array)),
-      mergeMap(val => val)
-    );
-
-
-
-    usersOrganization.subscribe(console.log);
-
+    ////////////////////////////
 
   }
 
+
   initObservables() {
+    this.devices$ = this.store.select(state => {
+      return this.mapStateToDevices(state);
+    });
+
+    this.devicesGroup$ = this.store.select(state => {
+      return this.mapStateToDevicesGropup(state);
+    });
+
+    this.devicesGroup$ = this.devices$.pipe(
+      mergeMap(obs$ => Observable.from(obs$)),
+      groupBy(device => device.type),
+      mergeMap(list$ => {
+        const count$ = list$.count();
+        return count$.map(count => ({ type: list$.key, count }));
+      }),
+      toArray(),
+    );
+
+
     this.store.subscribe(
-      val => {
-        // console.log('');
+      state => {
+        console.log('Devices component received state', state);
+      }
+    );
+
+
+    this.deviceService.getDeviceList(null).subscribe(
+      data => {
+        console.log('getDeviceList');
+        this.store.dispatch(new LoadDeviceAction(data));
       }
     );
 
@@ -133,17 +153,7 @@ export class DevicesComponent implements OnInit, OnDestroy {
     //   console.log(val);
     // });
 
-    this.devices$ = this.deviceService.getDeviceList(null);
-
-    this.devicesGroup$ = this.devices$.pipe(
-      mergeMap(obs$ => Observable.from(obs$)),
-      groupBy(device => device.type),
-      mergeMap(list$ => {
-        const count$ = list$.count();
-        return count$.map(count => ({ type: list$.key, count }));
-      }),
-      toArray(),
-    );
+    // this.devices$ = this.deviceService.getDeviceList(null);
 
     // this.devicesGroup$.subscribe(function (val) {
     //   console.log('Text');
@@ -153,34 +163,46 @@ export class DevicesComponent implements OnInit, OnDestroy {
      this.combineResult$ = Observable.combineLatest(this.deviceService.observableMRA$,
       this.deviceService.observableLSR$,
       this.deviceService.observableVOC$);
-
-
-
     //////////////////////////////////////
+  }
 
-    // const pageSource = this.pageStream.map(pageNumber => {
-    //   this.page = pageNumber;
-    //   return {search: this.terms, page: pageNumber};
-    // });
+  mapStateToDevices(state: ApplicationState): Idevice[] {
+    console.log('state.storeData -> ', state.storeData);
+    if (!state.storeData.devices) {
+      return [];
+    }
+    return _.values<Idevice>(state.storeData.devices);
+  }
 
-    // const searchSource = this.searchTermStream
-    //     .debounceTime(1000)
-    //     .distinctUntilChanged()
-    //     .map(searchTerm => {
-    //       this.terms = searchTerm;
-    //       return {search: searchTerm, page: 1};
-    //     });
+  mapStateToDevicesGropup(state: ApplicationState): Idevice[] {
 
-    //     const source = pageSource
-    //     .merge(searchSource)
-    //     .startWith({search: this.terms, page: this.page})
-    //     .mergeMap((params: {search: string, page: number}) => {
-    //       console.log('test');
-    //       return this.deviceService.getDeviceList();
-    //     })
-    //     .share();
+    // mergeMap(obs$ => Observable.from(obs$)),
+    //   groupBy(device => device.type),
+    //   mergeMap(list$ => {
+    //     const count$ = list$.count();
+    //     return count$.map(count => ({ type: list$.key, count }));
+    //   }),
+    //   toArray(),
 
-    //     source.pluck('_id');
+
+    console.log('state.storeData -> ', state.storeData);
+    if (!state.storeData.devices) {
+      return [];
+    }
+
+    const devices = _.values<Idevice>(state.storeData.devices);
+
+
+    const val$ = Observable.from(_.values<Idevice>(state.storeData.devices)).pipe(
+      groupBy(device => device.type),
+      mergeMap(list$ => {
+        const count$ = list$.count();
+        return count$.map(count => ({ type: list$.key, count }));
+      }),
+      toArray()
+    );
+
+    // return _.values<Idevice>(state.storeData.devices);
   }
 
   findDevices() {
