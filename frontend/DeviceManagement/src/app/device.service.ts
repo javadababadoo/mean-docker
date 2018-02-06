@@ -18,16 +18,25 @@ export class DeviceService {
 
   selectedDevice: Idevice;
 
+  public lastDevices: [{}];
+
   private subjectMRA = new Subject();
   private subjectVOC = new Subject();
   private subjectLSR = new Subject();
 
-  public observableMRA$ = this.subjectMRA.asObservable();
-  public observableVOC$ = this.subjectVOC.asObservable();
-  public observableLSR$ = this.subjectLSR.asObservable();
+  public observableMRA$ = this.subjectMRA;
+  public observableVOC$ = this.subjectVOC;
+  public observableLSR$ = this.subjectLSR;
+
+  public combineResult$ = Observable.combineLatest(this.observableMRA$,
+    this.observableLSR$,
+    this.observableVOC$);
 
   constructor(private _http: HttpClient, private _http1: Http) {
-   }
+    this.combineResult$.subscribe(val => {
+      this.lastDevices = val;
+    });
+  }
 
    test() {
     this.subjectMRA.next({id: '3232'});

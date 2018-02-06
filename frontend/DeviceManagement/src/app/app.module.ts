@@ -19,6 +19,7 @@ import { DeviceDetailComponent } from './devices/device-detail/device-detail.com
 import { HighLightDirective } from './high-light.directive';
 import { PageHeaderComponent } from './page-header/page-header.component';
 import { LOADED_DEVICES, LoadDeviceAction } from './store/actions';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
 // export function storeReducer(state: ApplicationState = INITIAL_APPLICATION_STATE, action: Action): ApplicationState {
 //   return {
@@ -46,7 +47,10 @@ import { LOADED_DEVICES, LoadDeviceAction } from './store/actions';
     RoutingModule,
     ReactiveFormsModule,
     HttpModule,
-    StoreModule.forRoot(reducers)
+    StoreModule.forRoot(reducers),
+    StoreDevtoolsModule.instrument({
+      maxAge: 5
+    })
   ],
   providers: [DeviceService],
   bootstrap: [AppComponent]

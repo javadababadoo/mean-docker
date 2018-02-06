@@ -38,8 +38,11 @@ export class DevicesComponent implements OnInit, OnDestroy {
   selectedDevice: Idevice;
   errorMessage: string;
 
+  total$: Observable<[{}]>;
+
   devices$: Observable<Idevice[]>;
 
+  devicesCopy$: Observable<Idevice[]>;
 
   devicesSubject$: Observable<Idevice[]>;
 
@@ -52,6 +55,7 @@ export class DevicesComponent implements OnInit, OnDestroy {
   observableLSR$: Observable<string>;
 
   combineResult$: Observable<[{}, {}, {}]>;
+
 
   private lastDeviceSubscription: Subscription;
 
@@ -99,17 +103,46 @@ export class DevicesComponent implements OnInit, OnDestroy {
 
   }
 
+  getLastDevices() {
+    return this.deviceService.lastDevices;
+  }
 
   initObservables() {
     this.devices$ = this.store.select(state => {
       return this.mapStateToDevices(state);
     });
 
-    this.devicesGroup$ = this.store.select(state => {
-      return this.mapStateToDevicesGropup(state);
-    });
+    this.store.subscribe(
+      state => {
+        console.log('Devices component received state', state);
+      }
+    );
 
-    this.devicesGroup$ = this.devices$.pipe(
+    /////////////// Migrando NGRX store //////////
+    this.store.map(state => {
+      const mapTest = this.mapStateToDevices(state);
+      console.log('mapTest', mapTest);
+      return mapTest;
+    }).pipe(
+      mergeMap(obs$ => Observable.from(obs$)),
+      groupBy(device => device.type),
+      mergeMap(list$ => {
+        const count$ = list$.count();
+        return Observable.of(count$.map(count => ({ type: list$.key, count })));
+      }),
+    ).subscribe(function (val) {
+        console.log('DeviceGroup -> ', val);
+      }, function (val) {
+        console.log('Error -> ', val);
+      }, function () {
+        console.log('complete -> ');
+      });
+
+      ////////////////////////////////////
+
+    this.devicesCopy$ = this.deviceService.getDeviceList(null);
+
+    this.devicesGroup$ = this.devicesCopy$.pipe(
       mergeMap(obs$ => Observable.from(obs$)),
       groupBy(device => device.type),
       mergeMap(list$ => {
@@ -119,80 +152,51 @@ export class DevicesComponent implements OnInit, OnDestroy {
       toArray(),
     );
 
-
-    this.store.subscribe(
-      state => {
-        console.log('Devices component received state', state);
-      }
-    );
-
-
-    this.deviceService.getDeviceList(null).subscribe(
+    this.devicesCopy$.subscribe(
       data => {
         console.log('getDeviceList');
         this.store.dispatch(new LoadDeviceAction(data));
       }
     );
 
-
-
     this.devicesSubject$ = this.keySubject.asObservable().pipe(
       debounceTime(1000),
       startWith(''),
       distinctUntilChanged(),
       switchMap(textfilter => {
+        console.log('devicesSubject -> ' + textfilter);
         return this.deviceService.getDeviceList(textfilter);
       })
     );
 
-    // this.keySubject.pipe(
-    //   debounceTime(1000),
-    //   distinctUntilChanged(),
-    //   switchMap(textfilter => this.deviceService.getDeviceList(textfilter))
-    // ).subscribe(function(val){
-    //   console.log(val);
-    // });
-
-    // this.devices$ = this.deviceService.getDeviceList(null);
-
-    // this.devicesGroup$.subscribe(function (val) {
-    //   console.log('Text');
-    //   console.log(val);
-    // });
-
-     this.combineResult$ = Observable.combineLatest(this.deviceService.observableMRA$,
-      this.deviceService.observableLSR$,
-      this.deviceService.observableVOC$);
+    // this.combineResult$ = Observable.combineLatest(this.deviceService.observableMRA$,
+    //   this.deviceService.observableLSR$,
+    //   this.deviceService.observableVOC$);
     //////////////////////////////////////
   }
 
   mapStateToDevices(state: ApplicationState): Idevice[] {
-    console.log('state.storeData -> ', state.storeData);
+    // console.log('state.storeData -> ', state.storeData);
     if (!state.storeData.devices) {
       return [];
     }
+
+    const val = _.values<Idevice>(state.storeData.devices);
+
+    if (val.length === 0) {
+      return [];
+    }
+
     return _.values<Idevice>(state.storeData.devices);
   }
 
   mapStateToDevicesGropup(state: ApplicationState): Idevice[] {
-
-    // mergeMap(obs$ => Observable.from(obs$)),
-    //   groupBy(device => device.type),
-    //   mergeMap(list$ => {
-    //     const count$ = list$.count();
-    //     return count$.map(count => ({ type: list$.key, count }));
-    //   }),
-    //   toArray(),
-
-
     console.log('state.storeData -> ', state.storeData);
     if (!state.storeData.devices) {
       return [];
     }
 
     const devices = _.values<Idevice>(state.storeData.devices);
-
-
     const val$ = Observable.from(_.values<Idevice>(state.storeData.devices)).pipe(
       groupBy(device => device.type),
       mergeMap(list$ => {
@@ -258,6 +262,7 @@ export class DevicesComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     // this.lastDeviceSubscription.unsubscribe();
+    // this.combineResult$.d
   }
 
   search(searchFilterText) {

@@ -10,7 +10,7 @@ export const INITIAL_UI_STATE: UiState = {
 };
 
 export function uiReducer(state: UiState = INITIAL_UI_STATE, action: Action): UiState {
-  console.log('uiState --> ' + state);
+  // console.log('uiState --> ' + state);
   switch (action.type) {
     default:
       return state;

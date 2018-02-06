@@ -23,7 +23,7 @@ export function storeReducer(state: StoreData = INITIAL_STORE_DATA, action: Acti
 }
 
 function handleLoadedDevicesAction(state: StoreData, action: LoadDeviceAction): StoreData {
-  console.log('handleLoadedDevicesAction');
+  // console.log('handleLoadedDevicesAction');
   return {
     devices: _.keyBy(action.payLoad, '_id')
   };
